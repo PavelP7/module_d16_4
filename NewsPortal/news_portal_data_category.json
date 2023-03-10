@@ -1,0 +1,1 @@
+[{"model": "news.category", "pk": 1, "fields": {"topic": "Музыка", "subscribers": [1]}}, {"model": "news.category", "pk": 2, "fields": {"topic": "Спорт", "subscribers": [1]}}]

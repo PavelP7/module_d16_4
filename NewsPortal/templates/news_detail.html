@@ -1,0 +1,30 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+Post
+{% endblock title %}
+
+{% block content %}
+   <h1>{{ post.title|censor }}</h1>
+   <tr align="left">
+     <td> <em>Дата публикации:</em> </td>
+     <td> <em>{{ post.datetime_in|date:'d.m.Y' }}</em> </td>
+   <tr>
+   <hr>
+   <p align="left"> <font size="5">{{ post.text|censor }} </font></p>
+   {% if category %}
+      {% if is_subscriber %}
+         <p align="left"> Вы подписаны на категорию "{{ category }}"</p>
+      {% else %}
+         <form method="post" action="">
+            {% csrf_token %}
+            <p align="left"> <input type="text" name="topic" value="{{ category }}" hidden="hidden"></p>
+            <p align="left"> <input type="submit" value="Подписаться на {{ category }}"></p>
+         </form>
+      {% endif%}
+   {% else %}
+   <p align="left"> Без категории</p>
+   {% endif%}
+{% endblock content %}

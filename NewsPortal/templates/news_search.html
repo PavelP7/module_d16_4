@@ -1,0 +1,59 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block title %}
+Posts
+{% endblock title %}
+
+{% block content %}
+   <h1>Поиск новостей</h1>
+   <form action="" method="get">
+       {% load cache %}
+       {% cache 60 date %}
+           {{ filterset.form.as_p }}
+           <p><label for="date">Дата публикации (не ранее):</label>
+               <input type="date" id="date" name="datetime_in" value="2022-01-01"></p>
+           <input type="submit" value="Найти" />
+       {% endcache %}
+   </form>
+   <hr>
+   {% if posts %}
+       <em>Найдено новостей: {{ posts|length }}</em>
+       <table align="center" width="600" cellpadding="3">
+           <tr>
+               <th> Заголовок </th>
+               <th> Дата и время </th>
+               <th> Содержание </th>
+           </tr>
+           {% for post in posts %}
+               <tr align="left">
+                   <td width="170"> {{ post.title|censor }} </td>
+                   <td align="center" width="170"> {{ post.datetime_in }} </td>
+                   <td align="center"> {{ post.text|truncatechars:20|censor }} </td>
+               </tr>
+           {% endfor %}
+       </table>
+   {% else %}
+       <h2>К сожалению, нет ни одной новости...</h2>
+   {% endif %}
+
+   {% if page_obj.has_previous %}
+       <a href="?{% url_replace page=1 %}">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {{ page_obj.number }}
+
+   {% if page_obj.has_next %}
+       <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+{% endblock content %}

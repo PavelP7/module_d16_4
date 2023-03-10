@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p> Здравствуй, <strong>{{ username }}</strong>. Мы подготовили список новых статей за прошедшую неделю. </p>
+    <tr align="left">
+        <th> Статья </th>
+        <th> Содержание </th>
+    </tr>
+    {% for post in posts %}
+    <tr align="left">
+        <td width="170"> <a href="http://127.0.0.1:8000/news/{{ post.id }}">{{ post.title }}</a></td>
+        <td width="170"> {{ post.text|truncatechars:20 }} </td>
+    </tr>
+    {% endfor %}
+</body>
+</html>
